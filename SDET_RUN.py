@@ -1,6 +1,22 @@
 import RPi.GPIO as GPIO # using RPi.GPIO module
 from time import sleep # import function sleep for delay
 
+# -------------
+# Stepper Setup
+# -------------
+DIR = 20   # Direction GPIO Pin
+STEP = 21  # Step GPIO Pin
+CW = 1     # Clockwise Rotation
+CCW = 0    # Counterclockwise Rotation
+SPR = 120  # Steps per Revolution (360 / 7.5)
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(DIR, GPIO.OUT)
+GPIO.setup(STEP, GPIO.OUT)
+step_count = SPR
+delay = .050
+# -----------------
+# Stepper Setup end
+# -----------------
 
 # -----------
 # Latch Setup 
@@ -23,17 +39,6 @@ lp2 = GPIO.PWM(lAN2, 100)
 # Latch Setup end
 # ---------------
 
-# -------------
-# LATCH UNLOCK 
-# -------------
-print("Unlock")
-GPIO.output(lDIG1, GPIO.HIGH) 
-GPIO.output(lDIG2, GPIO.HIGH)
-lp1.start(50)
-sleep(0.05)
-lp2.start(50)
-sleep(3)
-
 
 # ---------------------
 # Linear Actuator Setup 
@@ -55,7 +60,30 @@ p2 = GPIO.PWM(AN2, 100) #lower
 
 print("SDET Sequence Initiated")
 
+# --------------------
+# Stepper Go To Target
+# -------------------
+GPIO.output(DIR, CW)
+for x in range(step_count):
+    GPIO.output(STEP, GPIO.HIGH)
+    sleep(delay)
+    GPIO.output(STEP, GPIO.LOW)
+    sleep(delay)
+# -----------
+# Stepper end
+# -----------
 
+
+# -------------
+# LATCH UNLOCK 
+# -------------
+print("Unlock")
+GPIO.output(lDIG1, GPIO.HIGH) 
+GPIO.output(lDIG2, GPIO.HIGH)
+lp1.start(50)
+sleep(0.05)
+lp2.start(50)
+sleep(1)
 
 # -------------------
 # Linear Actuator out
@@ -80,7 +108,19 @@ p1.start(50)
 sleep(1)
 p1.start(50)
 sleep(1)
-
+# -------------
+# LATCH DEENERGIZE 
+# -------------
+print("Lock")
+GPIO.output(lDIG1, GPIO.LOW) 
+GPIO.output(lDIG2, GPIO.LOW)
+lp1.start(0)
+sleep(0.05)
+lp2.start(0)
+sleep(1)
+# --------------------
+# LATCH DEENERGIZE end
+# --------------------
 
 p2.start(50)
 sleep(1)
@@ -94,7 +134,6 @@ sleep(1)
 p1.start(0) # set speed M1=0
 p2.start(0) # set speed M2=0
 print("exit")
-
 # -------------------
 # Linear Actuator end
 # -------------------
@@ -102,30 +141,11 @@ print("exit")
 print("Signal to return happens here")
 sleep(1)
 
-# -------------
-# LATCH DEENERGIZE 
-# -------------
-print("Lock")
-GPIO.output(lDIG1, GPIO.LOW) 
-GPIO.output(lDIG2, GPIO.LOW)
-lp1.start(0)
-sleep(0.05)
-lp2.start(0)
-sleep(3)
-
-
-
-
 
 # -------------------
 # Linear Actuator in
 # -------------------
-#print("Stowing Armour")
-# -------------------
-# Linear Actuator out
-# -------------------
-
-print("Deploying Armour")
+print("Stowing Armour")
 GPIO.output(DIG1, GPIO.LOW) 
 GPIO.output(DIG2, GPIO.HIGH)
 
@@ -137,16 +157,15 @@ p2.start(50)
 sleep(1)
 p2.start(50)
 sleep(1) 
+p1.start(50)
+sleep(1)
+p1.start(50)
+sleep(1)
+p1.start(50)
+sleep(1)
+p1.start(50)
+sleep(1)
 
-p1.start(50)
-sleep(1)
-p1.start(50)
-sleep(1)
-p1.start(50)
-sleep(1)
-p1.start(50)
-sleep(1)
-# maybe about here we should deenergize the latch.
 p1.start(50)
 sleep(1)
 p1.start(50)
@@ -158,8 +177,23 @@ sleep(1)
 p1.start(0) # set speed M1=0
 p2.start(0) # set speed M2=0
 print("exit")
-
 # -------------------
 # Linear Actuator end
 # -------------------
+
+# --------------------
+# Stepper Go To Target
+# -------------------
+sleep(.5)
+GPIO.output(DIR, CCW)
+for x in range(step_count):
+    GPIO.output(STEP, GPIO.HIGH)
+    sleep(delay)
+    GPIO.output(STEP, GPIO.LOW)
+    sleep(delay)
+# -----------
+# Stepper end
+# -----------
+
+GPIO.cleanup()
 
