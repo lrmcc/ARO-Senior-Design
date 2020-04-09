@@ -1,4 +1,4 @@
-mport RPi.GPIO as GPIO
+import RPi.GPIO as GPIO
 from datetime import datetime
 
 #Static program vars
