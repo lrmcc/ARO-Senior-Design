@@ -238,6 +238,7 @@ def processImage(frame):
             if(target_center[0] < center[0]+15):
                 frame = cv2.putText(frame, 'Target Lock', center_bottom, font, fontScale, red_color, thickness, cv2.LINE_AA)
 		deploySDET()
+		sleep(3)
 		stowSDET()
     print("len(target_aquired): ", len(target_aquired_x))
     #if (deploy):
