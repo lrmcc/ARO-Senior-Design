@@ -1,4 +1,11 @@
 Senior Design SDET programs readme by Luke McConnell 5.4.2020
+===========================================================================
+
+NOTE: The Raspberry Pi Raspbian OS gui has been having trouble open folders 
+and displaying things other than text. We have been using the 
+terminal's command line in order to use the system. I have outline a few 
+basic types of commands needed to launch, navigate and edit files.
+
 -----------------------------------------------------------------------------
 There are 3 main programs to be used for testing:
 
@@ -25,7 +32,19 @@ Check directory contents by using 'ls' command
 
 3. Launch program with the command: python file_name.py
 Where 'file_name.py' is replaced with the desired file
+------------------------------------------------------------------------------
+In order to edit a file, if it exists on the desktop right-click and open
+with text editor 
 
+OR
+Navigate to the directory and open/edit/save using the 'nano' text editor.
+to do this, use the command: nano file_name.txt
+where file_name.txt is the file desired to be editted
+(nano can edit many file types other than just .txt, for example, 
+.py files are also edittable.)
+Once you have made edits and are ready to save, 
+press CTRL-x to start exitting, then press 'y' to select save,
+ and  with 'yes' highlighted, press return to save and exit.
 ------------------------------------------------------------------------------
 EXAMPLE:
 
